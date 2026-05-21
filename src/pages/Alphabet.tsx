@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { speak } from '../hooks/useSound'
+import { useProgressSync } from '../hooks/useProgressSync'
 
 const alphabetData = [
   { letter: 'A', word: 'Apple', emoji: '🍎', color: 'bg-red-400' },
@@ -34,6 +35,7 @@ const alphabetData = [
 export default function Alphabet() {
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const { recordAlphabet } = useProgressSync()
 
   const selectedData = alphabetData.find(a => a.letter === selectedLetter)
 
@@ -54,6 +56,7 @@ export default function Alphabet() {
     speakLetter(letter)
     setIsPlaying(true)
     setTimeout(() => setIsPlaying(false), 500)
+    recordAlphabet(letter)
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { speak } from '../hooks/useSound'
+import { useProgressSync } from '../hooks/useProgressSync'
 
 interface Sentence {
   english: string
@@ -55,6 +56,7 @@ const categories = [
 export default function Sentences() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [playingIndex, setPlayingIndex] = useState<number | null>(null)
+  const { recordSentence } = useProgressSync()
 
   const filteredSentences = selectedCategory === 'all' 
     ? sentences 
@@ -62,6 +64,7 @@ export default function Sentences() {
 
   const speakSentence = (sentence: string, index: number) => {
     setPlayingIndex(index)
+    recordSentence()
     speak(sentence, 'en-US', 0.75)
       .then(() => setPlayingIndex(null))
       .catch(error => {

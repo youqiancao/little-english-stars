@@ -45,6 +45,25 @@ export default function Progress() {
     if (user) {
       loadProgress()
     }
+
+    // 监听 storage 事件，当其他页面更新进度时自动刷新
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key && e.key.startsWith('kidsEnglishProgress_')) {
+        loadProgress()
+      }
+    }
+    window.addEventListener('storage', handleStorageChange)
+
+    // 每次页面获得焦点时刷新进度
+    const handleFocus = () => {
+      if (user) loadProgress()
+    }
+    window.addEventListener('focus', handleFocus)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [user])
 
   const loadProgress = async () => {

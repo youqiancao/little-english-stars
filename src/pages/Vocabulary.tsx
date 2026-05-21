@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { speak } from '../hooks/useSound'
+import { useProgressSync } from '../hooks/useProgressSync'
 
 interface Word {
   english: string
@@ -127,6 +128,7 @@ export default function Vocabulary() {
   const [selectedCategory, setSelectedCategory] = useState<string>('colors')
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
+  const { recordVocabulary } = useProgressSync()
 
   const category = categories.find(c => c.id === selectedCategory)!
   const currentWord = category.words[currentWordIndex]
@@ -135,6 +137,7 @@ export default function Vocabulary() {
     speak(word, 'en-US', 0.7).catch(error => {
       console.warn('Speech synthesis failed:', error)
     })
+    recordVocabulary(selectedCategory)
   }
 
   const nextWord = () => {

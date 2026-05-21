@@ -88,6 +88,58 @@ async function initDatabase() {
       )
     `)
     
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS progress (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        category VARCHAR(50) NOT NULL,
+        item_id VARCHAR(50),
+        value INT DEFAULT 0,
+        completed BOOLEAN DEFAULT FALSE,
+        stars INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        UNIQUE KEY uk_user_category_item (user_id, category, item_id)
+      )
+    `)
+    
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS achievements (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        achievement_id VARCHAR(50) NOT NULL,
+        earned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        UNIQUE KEY uk_user_achievement (user_id, achievement_id)
+      )
+    `)
+    
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS game_scores (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        game_type VARCHAR(50) NOT NULL,
+        score INT NOT NULL,
+        played_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `)
+    
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS daily_activity (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        activity_date DATE NOT NULL,
+        words_learned INT DEFAULT 0,
+        time_spent INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        UNIQUE KEY uk_user_date (user_id, activity_date)
+      )
+    `)
+    
     connection.release()
     log('INFO', 'Database tables initialized')
   } catch (error) {

@@ -12,3 +12,10 @@
 {"timestamp":"2026-05-21T15:21:10.832Z","level":"WARN","message":"Login failed: invalid credentials","data":{"username":"ning"}}
 {"timestamp":"2026-05-21T15:21:24.397Z","level":"INFO","message":"Registration attempt","data":{"username":"meng"}}
 {"timestamp":"2026-05-21T15:21:24.403Z","level":"INFO","message":"Registration successful","data":{"userId":5,"username":"meng"}}
+{"timestamp":"2026-05-21T15:39:18.490Z","level":"INFO","message":"MySQL connected successfully"}
+{"timestamp":"2026-05-21T15:39:18.500Z","level":"INFO","message":"Database tables initialized"}
+{"timestamp":"2026-05-21T15:39:26.818Z","level":"INFO","message":"MySQL connected successfully"}
+{"timestamp":"2026-05-21T15:39:26.827Z","level":"INFO","message":"Database tables initialized"}
+{"timestamp":"2026-05-21T15:43:54.892Z","level":"INFO","message":"MySQL connected successfully"}
+{"timestamp":"2026-05-21T15:43:54.902Z","level":"INFO","message":"Database tables initialized"}
+{"timestamp":"2026-05-21T15:43:54.904Z","level":"INFO","message":"Server running on http://localhost:3001"}

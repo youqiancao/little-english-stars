@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useProgressSync } from '../hooks/useProgressSync'
 
 const games = [
   {
@@ -103,6 +104,8 @@ function MemoryGame({ onBack }: { onBack: () => void }) {
   const [flipped, setFlipped] = useState<number[]>([])
   const [matched, setMatched] = useState<number[]>([])
   const [score, setScore] = useState(0)
+  const { recordGame } = useProgressSync()
+  const [gameRecorded, setGameRecorded] = useState(false)
 
   useEffect(() => {
     initGame()
@@ -115,6 +118,7 @@ function MemoryGame({ onBack }: { onBack: () => void }) {
     setFlipped([])
     setMatched([])
     setScore(0)
+    setGameRecorded(false)
   }
 
   const handleClick = (index: number) => {
@@ -132,6 +136,10 @@ function MemoryGame({ onBack }: { onBack: () => void }) {
         
         if (matched.length === cards.length - 2) {
           setTimeout(() => {
+            if (!gameRecorded) {
+              recordGame('memory', score + 1)
+              setGameRecorded(true)
+            }
             alert('🎉 恭喜你赢了！太棒了！')
           }, 500)
         }
@@ -199,6 +207,7 @@ function QuizGame({ onBack }: { onBack: () => void }) {
   const [score, setScore] = useState(0)
   const [showResult, setShowResult] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
+  const { recordGame } = useProgressSync()
 
   const question = quizQuestions[currentQ]
 
@@ -212,6 +221,7 @@ function QuizGame({ onBack }: { onBack: () => void }) {
         setCurrentQ(prev => prev + 1)
         setSelected(null)
       } else {
+        recordGame('quiz', answer === question.correct ? score + 1 : score)
         setShowResult(true)
       }
     }, 1500)
@@ -339,6 +349,7 @@ function SpellGame({ onBack }: { onBack: () => void }) {
   const [answer, setAnswer] = useState('')
   const [score, setScore] = useState(0)
   const [showSuccess, setShowSuccess] = useState(false)
+  const { recordGame } = useProgressSync()
 
   useEffect(() => {
     scrambleWord(words[currentWord].word)
@@ -368,6 +379,7 @@ function SpellGame({ onBack }: { onBack: () => void }) {
           if (currentWord < words.length - 1) {
             setCurrentWord(prev => prev + 1)
           } else {
+            recordGame('spell', score + 1)
             alert(`🎉 恭喜你完成了所有单词！得分: ${score + 1}/${words.length}`)
           }
         }, 1500)
