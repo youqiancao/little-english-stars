@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { speak } from '../hooks/useSound'
 
 interface Sentence {
   english: string
@@ -60,15 +61,13 @@ export default function Sentences() {
     : sentences.filter(s => s.category === selectedCategory)
 
   const speakSentence = (sentence: string, index: number) => {
-    if ('speechSynthesis' in window) {
-      speechSynthesis.cancel()
-      const utterance = new SpeechSynthesisUtterance(sentence)
-      utterance.lang = 'en-US'
-      utterance.rate = 0.75
-      setPlayingIndex(index)
-      utterance.onend = () => setPlayingIndex(null)
-      speechSynthesis.speak(utterance)
-    }
+    setPlayingIndex(index)
+    speak(sentence, 'en-US', 0.75)
+      .then(() => setPlayingIndex(null))
+      .catch(error => {
+        console.warn('Speech synthesis failed:', error)
+        setPlayingIndex(null)
+      })
   }
 
   return (

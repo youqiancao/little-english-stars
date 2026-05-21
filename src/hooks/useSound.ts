@@ -84,23 +84,71 @@ export function useSound() {
   return { playSound, initAudio }
 }
 
+export function isSpeechSupported(): boolean {
+  return 'speechSynthesis' in window
+}
+
+export function getAvailableVoices(): SpeechSynthesisVoice[] {
+  if (!isSpeechSupported()) {
+    return []
+  }
+  return window.speechSynthesis.getVoices()
+}
+
+export function getVoiceForLang(lang: string): SpeechSynthesisVoice | null {
+  const voices = getAvailableVoices()
+  
+  const exactMatch = voices.find(v => v.lang === lang && v.lang.startsWith('en'))
+  if (exactMatch) return exactMatch
+  
+  const partialMatch = voices.find(v => v.lang.startsWith(lang.split('-')[0]))
+  if (partialMatch) return partialMatch
+  
+  const englishVoice = voices.find(v => v.lang.startsWith('en'))
+  if (englishVoice) return englishVoice
+  
+  return voices.find(v => v.default) || null
+}
+
 export function speak(text: string, lang: string = 'en-US', rate: number = 0.8): Promise<void> {
   return new Promise((resolve, reject) => {
-    if ('speechSynthesis' in window) {
+    if (!('speechSynthesis' in window)) {
+      return reject(new Error('Speech synthesis not supported in this browser'))
+    }
+
+    try {
       speechSynthesis.cancel()
 
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.lang = lang
-      utterance.rate = rate
+      utterance.rate = Math.min(1.5, Math.max(0.1, rate))
       utterance.pitch = 1.0
       utterance.volume = 1.0
 
-      utterance.onend = () => resolve()
-      utterance.onerror = (event) => reject(event)
+      const voice = getVoiceForLang(lang)
+      if (voice) {
+        utterance.voice = voice
+      }
+
+      utterance.onend = () => {
+        resolve()
+      }
+
+      utterance.onerror = (event) => {
+        const errorMessages: Record<string, string> = {
+          'not-allowed': '语音合成被阻止，请检查浏览器权限设置',
+          'synthesis-unavailable': '语音合成服务不可用',
+          'synthesis-failed': '语音合成失败',
+          'language-not-supported': '不支持该语言',
+          'voice-unavailable': '语音不可用'
+        }
+        const message = errorMessages[event.error] || `语音合成错误: ${event.error}`
+        reject(new Error(message))
+      }
 
       speechSynthesis.speak(utterance)
-    } else {
-      reject(new Error('Speech synthesis not supported'))
+    } catch (error) {
+      reject(new Error(`语音合成发生异常: ${error instanceof Error ? error.message : 'Unknown error'}`))
     }
   })
 }

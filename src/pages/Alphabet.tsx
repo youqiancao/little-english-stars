@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { speak } from '../hooks/useSound'
 
 const alphabetData = [
   { letter: 'A', word: 'Apple', emoji: '🍎', color: 'bg-red-400' },
@@ -37,21 +38,15 @@ export default function Alphabet() {
   const selectedData = alphabetData.find(a => a.letter === selectedLetter)
 
   const speakLetter = (letter: string) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(letter)
-      utterance.lang = 'en-US'
-      utterance.rate = 0.8
-      speechSynthesis.speak(utterance)
-    }
+    speak(letter, 'en-US', 0.8).catch(error => {
+      console.warn('Speech synthesis failed:', error)
+    })
   }
 
   const speakWord = (word: string) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(word)
-      utterance.lang = 'en-US'
-      utterance.rate = 0.7
-      speechSynthesis.speak(utterance)
-    }
+    speak(word, 'en-US', 0.7).catch(error => {
+      console.warn('Speech synthesis failed:', error)
+    })
   }
 
   const handleLetterClick = (letter: string) => {

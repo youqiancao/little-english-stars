@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { speak } from '../hooks/useSound'
 
 interface Word {
   english: string
@@ -131,12 +132,9 @@ export default function Vocabulary() {
   const currentWord = category.words[currentWordIndex]
 
   const speakWord = (word: string) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(word)
-      utterance.lang = 'en-US'
-      utterance.rate = 0.7
-      speechSynthesis.speak(utterance)
-    }
+    speak(word, 'en-US', 0.7).catch(error => {
+      console.warn('Speech synthesis failed:', error)
+    })
   }
 
   const nextWord = () => {
