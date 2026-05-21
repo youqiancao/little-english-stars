@@ -1,0 +1,3 @@
+{"timestamp":"2026-05-21T13:26:43.780Z","level":"INFO","message":"MySQL connected successfully"}
+{"timestamp":"2026-05-21T13:26:43.785Z","level":"INFO","message":"Database tables initialized"}
+{"timestamp":"2026-05-21T13:26:43.789Z","level":"INFO","message":"Server running on http://localhost:3001"}

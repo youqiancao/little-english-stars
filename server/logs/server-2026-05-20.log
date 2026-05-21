@@ -1,0 +1,9 @@
+{"timestamp":"2026-05-20T16:46:18.059Z","level":"INFO","message":"MySQL connected successfully"}
+{"timestamp":"2026-05-20T16:46:18.066Z","level":"INFO","message":"Database tables initialized"}
+{"timestamp":"2026-05-20T16:46:18.068Z","level":"INFO","message":"Server running on http://localhost:3001"}
+{"timestamp":"2026-05-20T16:46:25.436Z","level":"INFO","message":"Login attempt","data":{"username":"test123"}}
+{"timestamp":"2026-05-20T16:46:25.444Z","level":"INFO","message":"Login successful","data":{"userId":2,"username":"test123"}}
+{"timestamp":"2026-05-20T16:47:55.833Z","level":"INFO","message":"Login attempt","data":{"username":"ning"}}
+{"timestamp":"2026-05-20T16:47:55.834Z","level":"WARN","message":"Login failed: invalid credentials","data":{"username":"ning"}}
+{"timestamp":"2026-05-20T16:48:12.201Z","level":"INFO","message":"Registration attempt","data":{"username":"ning"}}
+{"timestamp":"2026-05-20T16:48:12.243Z","level":"INFO","message":"Registration successful","data":{"userId":3,"username":"ning"}}
