@@ -4,3 +4,11 @@
 {"timestamp":"2026-05-21T15:10:08.742Z","level":"INFO","message":"MySQL connected successfully"}
 {"timestamp":"2026-05-21T15:10:08.751Z","level":"INFO","message":"Database tables initialized"}
 {"timestamp":"2026-05-21T15:10:08.754Z","level":"INFO","message":"Server running on http://localhost:3001"}
+{"timestamp":"2026-05-21T15:20:35.498Z","level":"INFO","message":"Login attempt","data":{"username":"ning"}}
+{"timestamp":"2026-05-21T15:20:35.523Z","level":"WARN","message":"Login failed: invalid credentials","data":{"username":"ning"}}
+{"timestamp":"2026-05-21T15:20:51.317Z","level":"INFO","message":"Registration attempt","data":{"username":"ning"}}
+{"timestamp":"2026-05-21T15:20:51.356Z","level":"WARN","message":"Registration failed: duplicate username","data":{"username":"ning"}}
+{"timestamp":"2026-05-21T15:21:10.830Z","level":"INFO","message":"Login attempt","data":{"username":"ning"}}
+{"timestamp":"2026-05-21T15:21:10.832Z","level":"WARN","message":"Login failed: invalid credentials","data":{"username":"ning"}}
+{"timestamp":"2026-05-21T15:21:24.397Z","level":"INFO","message":"Registration attempt","data":{"username":"meng"}}
+{"timestamp":"2026-05-21T15:21:24.403Z","level":"INFO","message":"Registration successful","data":{"userId":5,"username":"meng"}}
